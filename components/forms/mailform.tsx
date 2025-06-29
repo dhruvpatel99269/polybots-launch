@@ -24,7 +24,7 @@ const MailForm = () => {
         setLoading(true);
 
         try {
-            const res = await fetch("/api/waitlist", {
+            const res = await fetch("/api/registrations", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
