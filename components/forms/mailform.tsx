@@ -3,6 +3,7 @@ import { useState, useRef, ChangeEvent, FormEvent } from "react";
 import emailjs from "@emailjs/browser";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { toast } from "sonner";
 
 const MailForm = () => {
     const formRef = useRef<HTMLFormElement>(null);
@@ -48,10 +49,10 @@ const MailForm = () => {
                     process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
                 );
 
-                alert(`You're successfully added to the waitlist! Your queue number is #${data.queue}`);
+                toast.success(`You're successfully added to the waitlist! Your queue number is #${data.queue}`);
                 setEmail("");
             } else {
-                alert(data.error || "Something went wrong. Please try again.");
+                toast.error(data.error || "Something went wrong. Please try again.");
             }
         } catch (err) {
             console.error("Frontend error:", err);
