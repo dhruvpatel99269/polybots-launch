@@ -69,7 +69,7 @@ export default function Page() {
                   </Avatar>
                 ))}
               </div>
-              <span className="font-bold">{latestUsers.length} people on the waitlist</span>
+              <span className="font-bold">{latestUsers.length} people on the waitlist!</span>
             </div>
           </div>
         </div>

@@ -75,7 +75,7 @@ const MailForm = () => {
                     value={email}
                     onChange={handleChange}
                     placeholder="Enter your email"
-                    className="h-12 bg-gray-950/50 border-gray-800"
+                    className="h-12 bg-gray-950/50 border-gray-800 text-white"
                     required
                 />                
                 
