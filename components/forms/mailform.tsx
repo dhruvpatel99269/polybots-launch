@@ -5,90 +5,100 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
 
-const MailForm = () => {
-    const formRef = useRef<HTMLFormElement>(null);
-    const [email, setEmail] = useState("");
-    const [loading, setLoading] = useState(false);
+interface MailFormProps {
+  onSuccess?: (newUser: { email: string }) => void;
+}
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    };
+const MailForm = ({ onSuccess }: MailFormProps) => {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
 
-        if (!email || !email.includes("@")) {
-            alert("Please enter a valid email.");
-            return;
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !email.includes("@")) {
+      toast.error("Please enter a valid email.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/registrations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.status === 409) {
+        toast.error(`You're already on the waitlist! Your position is #${data.queue}`);
+      } else if (res.ok) {
+        // ✅ Send confirmation email
+        await emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
+          {
+            to_email: email,
+            from_email: process.env.FROM_EMAIL,
+            message: `New waitlist submission from: ${email}. Queue number: ${data.queue}`,
+            queue: data.queue,
+          },
+          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+        );
+
+        toast.success(`You're successfully added to the waitlist! Your queue number is #${data.queue}`);
+
+        // 🔥 Notify parent component immediately
+        if (onSuccess) {
+          onSuccess({ email });
         }
 
-        setLoading(true);
+        setEmail("");
+      } else {
+        toast.error(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      console.error("Frontend error:", err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        try {
-            const res = await fetch("/api/registrations", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email }),
-            });
+  return (
+    <div className="flex justify-center items-center w-full h-full">
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        className="flex flex-col md:flex-row gap-4 items-center w-full max-w-md"
+      >
+        <Input
+          type="email"
+          name="email"
+          value={email}
+          onChange={handleChange}
+          placeholder="Enter your email"
+          className="h-12 bg-gray-950/50 border-gray-800 text-white rounded-4xl pl-5"
+          required
+        />
 
-            const data = await res.json();
-
-            if (res.status === 409) {
-                toast.error(`You're already on the waitlist! Your position is #${data.queue}`);
-            } else if (res.ok) {
-                // ✅ Send confirmation email
-                await emailjs.send(
-                    process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
-                    process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
-                    {
-                        to_email: email,
-                        from_email: "99269dhruvpatel@gmail.com",
-                        message: `New waitlist submission from: ${email}. Queue number: ${data.queue}`,
-                        queue: data.queue,
-                    },
-                    process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-                );
-
-                toast.success(`You're successfully added to the waitlist! Your queue number is #${data.queue}`);
-                setEmail("");
-            } else {
-                toast.error(data.error || "Something went wrong. Please try again.");
-            }
-        } catch (err) {
-            console.error("Frontend error:", err);
-            alert("Something went wrong. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-
-    return (
-        <div className="flex justify-center items-center w-full h-full">
-            <form
-                ref={formRef}
-                onSubmit={handleSubmit}
-                className="flex flex-col md:flex-row gap-4 items-center w-full max-w-md"
-            >
-                <Input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={handleChange}
-                    placeholder="Enter your email"
-                    className="h-12 bg-gray-950/50 border-gray-800 text-white rounded-4xl pl-5"
-                    required
-                />                
-                
-                <Button
-                    type="submit"
-                    disabled={loading}
-                    className={`${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"}`}>
-                    {loading ? "Submitting..." : "Join Waitlist"}
-                </Button>
-            </form>
-        </div>
-    );
+        <Button
+          type="submit"
+          disabled={loading}
+          className={`${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"}`}
+        >
+          {loading ? "Submitting..." : "Join Waitlist"}
+        </Button>
+      </form>
+    </div>
+  );
 };
 
 export default MailForm;

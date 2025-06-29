@@ -55,7 +55,7 @@ export default function Page() {
           </div>
 
           <div className="flex gap-2 max-w-md mx-auto">
-            <MailForm />
+            <MailForm onSuccess={(newUser) => setLatestUsers((prev) => [newUser, ...prev])} />
           </div>
 
           <div className="flex flex-col items-center gap-8">
