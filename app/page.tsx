@@ -61,14 +61,22 @@ export default function Page() {
           <div className="flex flex-col items-center gap-8">
             <div className="flex items-center gap-4">
               <div className="flex -space-x-3">
-                {latestUsers.map((user, index) => (
+                {latestUsers.slice(0, 3).map((user, index) => (
                   <Avatar key={index} className="border-2 w-12 h-12">
                     <AvatarFallback className={`text-sm font-semibold border-white/20 ${getColorForEmail(user.email)}`}>
                       {user.email[0]?.toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 ))}
+
+                {/* Show +N if there are more than 3 users */}
+                {latestUsers.length > 3 && (
+                  <Avatar className="border-2 w-12 h-12 bg-gray-800 text-white text-sm font-semibold flex items-center justify-center">
+                    +{latestUsers.length - 3}
+                  </Avatar>
+                )}
               </div>
+
               <span className="font-bold">{latestUsers.length} people on the waitlist!</span>
             </div>
           </div>

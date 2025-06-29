@@ -9,8 +9,7 @@ export async function GET() {
 
     const users = await collection
       .find({})
-      .sort({ createdAt: -1 }) // latest first
-      .limit(3) // get top 3 latest
+      .sort({ createdAt: -1 }) // latest first      
       .toArray();
 
     return NextResponse.json({
