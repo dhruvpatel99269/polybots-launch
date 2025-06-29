@@ -5,15 +5,19 @@ import { GridBackground } from "@/components/ui/grid-background";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import MailForm from "@/components/forms/mailform";
 import { PolybotsLogo } from "@/components/ui/Polybotslogo";
+import { Badge } from "@/components/ui/badge";
+import { Zap } from "lucide-react";
 
 export default function Page() {
   const [latestUsers, setLatestUsers] = useState<{ email: string }[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/fetchWaitlist")
       .then((res) => res.json())
       .then((data) => setLatestUsers(data.users || []))
-      .catch((err) => console.error("Error loading latest users:", err));
+      .catch((err) => console.error("Error loading latest users:", err))
+      .finally(() => setLoading(false));
   }, []);
 
   function getColorForEmail(email: string): string {
@@ -61,24 +65,36 @@ export default function Page() {
           <div className="flex flex-col items-center gap-8">
             <div className="flex items-center gap-4">
               <div className="flex -space-x-3">
-                {latestUsers.slice(0, 3).map((user, index) => (
-                  <Avatar key={index} className="border-2 w-12 h-12">
-                    <AvatarFallback className={`text-sm font-semibold border-white/20 ${getColorForEmail(user.email)}`}>
-                      {user.email[0]?.toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                ))}
+                {loading ? (
+                  // Skeleton for avatars
+                  <>
+                    <div className="w-12 h-12 rounded-full bg-gray-700 animate-pulse" />
+                    <div className="w-12 h-12 rounded-full bg-gray-700 animate-pulse" />
+                    <div className="w-12 h-12 rounded-full bg-gray-700 animate-pulse" />
+                  </>
+                ) : (
+                  latestUsers.slice(0, 3).map((user, index) => (
+                    <Avatar key={index} className="border-2 w-12 h-12">
+                      <AvatarFallback className={`text-sm font-semibold border-white/20 ${getColorForEmail(user.email)}`}>
+                        {user.email[0]?.toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  ))
+                )}
 
-                {/* Show +N if there are more than 3 users */}
-                {latestUsers.length > 3 && (
+                {!loading && latestUsers.length > 3 && (
                   <Avatar className="border-2 w-12 h-12 bg-gray-800 text-white text-sm font-semibold flex items-center justify-center">
                     +{latestUsers.length - 3}
                   </Avatar>
                 )}
               </div>
 
-              <span className="font-bold">{latestUsers.length} people on the waitlist!</span>
+              <Badge className="font-bold h-6 text-yellow-200">
+                <Zap/>
+                {loading ? "Loading waitlist..." : `${latestUsers.length} people in the waitlist!`}
+              </Badge>
             </div>
+
           </div>
         </div>
       </div>
