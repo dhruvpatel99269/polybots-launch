@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Icons } from "@/components/ui/icons";
+import MailForm from "@/components/forms/mailform";
 
 export default function Page() {
   return (
@@ -21,6 +22,8 @@ export default function Page() {
           </div>
 
           <div className="flex gap-2 max-w-md mx-auto">
+            <MailForm />
+            
             <Input
               type="email"
               placeholder="Enter your email"
