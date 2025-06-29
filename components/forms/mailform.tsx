@@ -34,7 +34,7 @@ const MailForm = () => {
             const data = await res.json();
 
             if (res.status === 409) {
-                alert(`You're already on the waitlist! Your position is #${data.queue}`);
+                toast.error(`You're already on the waitlist! Your position is #${data.queue}`);
             } else if (res.ok) {
                 // ✅ Send confirmation email
                 await emailjs.send(
