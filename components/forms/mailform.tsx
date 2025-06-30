@@ -92,9 +92,14 @@ const MailForm = ({ onSuccess }: MailFormProps) => {
         <Button
           type="submit"
           disabled={loading}
-          className={`${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-neutral-800"}`}          
+          className={`${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-neutral-800"}`}
         >
-          {loading ? "Submitting..." : "Join Waitlist"}
+          {loading ? (
+            <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> <span>Processing</span></>
+          ) : (
+            "Join Waitlist"
+          )}
+
         </Button>
       </form>
     </div>
