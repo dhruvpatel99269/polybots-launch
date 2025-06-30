@@ -59,13 +59,15 @@ export default function Page() {
           </div>
 
           {/* Mail Form */}
-          <div className="flex gap-2 max-w-md mx-auto">
+          <div className="flex max-w-md mx-auto">
             <MailForm onSuccess={(newUser) => setLatestUsers((prev) => [newUser, ...prev])} />
           </div>
 
           {/* User Avatars & Count */}
-          <div className="flex flex-col items-center gap-8">
-            <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col justify-center items-center gap-8">
+            <div className="flex flex-col justify-center items-center gap-4 px-6 py-4 rounded-xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-lg w-fit mx-auto">
+              <div className="absolute justify-center inset-0 rounded-xl bg-white/5 blur-lg opacity-20" />
+              <div className="relative z-10 flex flex-col items-center ..."></div>
               <div className="flex -space-x-3">
                 {loading ? (
                   <>
@@ -77,7 +79,7 @@ export default function Page() {
                   latestUsers.slice(0, 3).map((user, index) => (
                     <Avatar
                       key={index}
-                      className={`border-2 w-12 h-12 hover:scale-110 transition-transform duration-300 animate-bounce ${index === 1 ? "delay-100" : index === 2 ? "delay-200" : "delay-0"
+                      className={`border-2 w-10 h-10 hover:scale-110 transition-transform duration-300 animate-bounce ${index === 1 ? "delay-100" : index === 2 ? "delay-200" : "delay-0"
                         }`}
                     >
                       <AvatarFallback
@@ -92,18 +94,19 @@ export default function Page() {
                 )}
 
                 {!loading && latestUsers.length > 3 && (
-                  <div className="w-12 h-12 rounded-full bg-gray-800 text-white font-semibold flex items-center justify-center border-2 text-sm hover:scale-110 transition-transform duration-300 animate-bounce delay-300">
+                  <div className="w-10 h-10 rounded-full bg-gray-800 text-white font-semibold flex items-center justify-center border-2 text-sm hover:scale-110 transition-transform duration-300 animate-bounce delay-300">
                     +{latestUsers.length - 3}
                   </div>
                 )}
               </div>
 
               {/* Count Badge */}
-              <Badge className="font-bold h-12 text-md text-yellow-200 animate-pulse flex items-center gap-1">
+              <Badge className="font-bold h-10 text-xs md:text-sm lg:text-lg xl:text-lg text-yellow-200 animate-pulse flex items-center gap-1">
                 <Zap className="w-4 h-4 animate-bounce" />
                 {loading ? "Loading waitlist..." : `${latestUsers.length} people in the waitlist!`}
               </Badge>
             </div>
+
           </div>
         </div>
       </div>

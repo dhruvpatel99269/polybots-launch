@@ -92,7 +92,7 @@ const MailForm = ({ onSuccess }: MailFormProps) => {
         <Button
           type="submit"
           disabled={loading}
-          className={`${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-neutral-800"}`}
+          className={`${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-neutral-800"}`}          
         >
           {loading ? "Submitting..." : "Join Waitlist"}
         </Button>
