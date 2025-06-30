@@ -163,3 +163,22 @@ input:-webkit-autofill:active {
           from { filter: brightness(1); }
           to { filter: brightness(1.3); }
         }
+
+        @keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 8px 2px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 12px 4px rgba(59, 130, 246, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 8px 2px rgba(59, 130, 246, 0.5);
+  }
+}
+
+.toast-glow-animated {
+  background-color: #111827;
+  color: white;
+  border: 1px solid #3b82f6;
+  animation: pulse-glow 1.5s infinite;
+}
