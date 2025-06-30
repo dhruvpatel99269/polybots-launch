@@ -4,6 +4,13 @@ import emailjs from "@emailjs/browser";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
+import { Loader2Icon } from "lucide-react";
+
+interface MailFormProps {
+  onSuccess?: (newUser: { email: string }) => void;
+}
+
+const MailForm = ({ onSuccess }: MailFormProps) => {
 import { SpinnerLoader } from "../loaders/Spinner";
 import { useWaitlist } from "@/hooks/useWaitlist";
 
@@ -21,7 +28,7 @@ const MailForm = () => {
     e.preventDefault();
 
     if (!email || !email.includes("@")) {
-      toast.error("Please enter a valid email.");
+      toast.info("Please enter a valid email.");
       return;
     }
 
@@ -51,7 +58,7 @@ const MailForm = () => {
           process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
         );
 
-        toast.success(`You're successfully added to the waitlist! Your queue number is #${data.queue}`);
+        toast.success("You're successfully added to the waitlist! Check your mail.");
 
         // Update waitlist state using hook
         setLatestUsers((prev) => [{ email }, ...prev]);
@@ -90,7 +97,12 @@ const MailForm = () => {
           disabled={loading}
           className={`${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-neutral-800"}`}
         >
-          {loading ? <SpinnerLoader /> : "Join Waitlist"}
+          {loading ? (
+            <div className="flex gap-x-1 items-center justify-center"><Loader2Icon className="size-4 animate-spin"/> <span>Processing</span></div>
+          ) : (
+            "Join Waitlist"
+          )}
+
         </Button>
       </form>
     </div>
