@@ -1,12 +1,14 @@
+// app/api/registrations/route.ts
+
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
+import { isValidEmail } from "@/lib/utils";
 
 export async function POST(req: Request) {
   try {
     const { email } = await req.json();
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
+    if (!email || !isValidEmail(email)) {
       return NextResponse.json(
         { error: "Please enter a valid email address." },
         { status: 400 }
@@ -21,14 +23,15 @@ export async function POST(req: Request) {
 
     if (existing) {
       return NextResponse.json(
-        { message: "You're already on the waitlist.", queue: existing.queue },
+        {
+          message: "You're already on the waitlist.",
+          queue: existing.queue,
+        },
         { status: 409 }
       );
     }
 
-    // ✅ Get the current queue size
     const totalUsers = await collection.countDocuments();
-
     const newUser = {
       email,
       queue: totalUsers + 1,
@@ -38,11 +41,14 @@ export async function POST(req: Request) {
     await collection.insertOne(newUser);
 
     return NextResponse.json(
-      { message: "Successfully added to the waitlist.", queue: newUser.queue },
+      {
+        message: "Successfully added to the waitlist.",
+        queue: newUser.queue,
+      },
       { status: 201 }
     );
   } catch (error) {
-    console.error("Waitlist API error:", error);
+    console.error("[REGISTRATION_ERROR]:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

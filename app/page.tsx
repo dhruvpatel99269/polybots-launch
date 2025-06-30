@@ -1,43 +1,10 @@
 'use client';
-
-import { useEffect, useState } from "react";
 import { GridBackground } from "@/components/ui/grid-background";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import MailForm from "@/components/forms/mailform";
 import { PolybotsLogo } from "@/components/ui/Polybotslogo";
-import { Badge } from "@/components/ui/badge";
-import { Zap } from "lucide-react";
+import AvatarGroup from "@/components/ui/AvatarGroup";
 
-export default function Page() {
-  const [latestUsers, setLatestUsers] = useState<{ email: string }[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/fetchWaitlist")
-      .then((res) => res.json())
-      .then((data) => setLatestUsers(data.users || []))
-      .catch((err) => console.error("Error loading latest users:", err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  function getColorForEmail(email: string): string {
-    const colors = [
-      "bg-gradient-to-br from-pink-500 to-rose-500",
-      "bg-gradient-to-br from-blue-500 to-cyan-500",
-      "bg-gradient-to-br from-yellow-400 to-orange-500",
-      "bg-gradient-to-br from-purple-500 to-fuchsia-600",
-      "bg-gradient-to-br from-green-400 to-emerald-600",
-      "bg-gradient-to-br from-red-400 to-amber-600",
-      "bg-gradient-to-br from-teal-400 to-blue-700",
-      "bg-gradient-to-br from-indigo-500 to-violet-700"
-    ];
-    let hash = 0;
-    for (let i = 0; i < email.length; i++) {
-      hash = email.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return colors[Math.abs(hash) % colors.length];
-  }
-
+export default function Page() {  
   return (
     <div className="relative min-h-screen overflow-hidden">
       <GridBackground />
@@ -57,57 +24,12 @@ export default function Page() {
               Be part of something truly extraordinary. Join thousands of others already gaining early access to our revolutionary new product.
             </p>
           </div>
-
-          {/* Mail Form */}
+          
           <div className="flex max-w-md mx-auto">
-            <MailForm onSuccess={(newUser) => setLatestUsers((prev) => [newUser, ...prev])} />
+            <MailForm/>
           </div>
 
-          {/* User Avatars & Count */}
-          <div className="flex flex-col justify-center items-center gap-8">
-            <div className="flex flex-col justify-center items-center gap-4 px-6 py-4 rounded-xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-lg w-fit mx-auto">
-              <div className="absolute justify-center inset-0 rounded-xl bg-white/5 blur-lg opacity-20" />
-              <div className="relative z-10 flex flex-col items-center ..."></div>
-              <div className="flex -space-x-3">
-                {loading ? (
-                  <>
-                    <div className="w-12 h-12 rounded-full bg-gray-700 animate-pulse" />
-                    <div className="w-12 h-12 rounded-full bg-gray-700 animate-pulse" />
-                    <div className="w-12 h-12 rounded-full bg-gray-700 animate-pulse" />
-                  </>
-                ) : (
-                  latestUsers.slice(0, 3).map((user, index) => (
-                    <Avatar
-                      key={index}
-                      className={`border-2 w-10 h-10 hover:scale-110 transition-transform duration-300 animate-bounce ${index === 1 ? "delay-100" : index === 2 ? "delay-200" : "delay-0"
-                        }`}
-                    >
-                      <AvatarFallback
-                        className={`text-sm font-semibold border-white/20 ${getColorForEmail(
-                          user.email
-                        )} hover:shadow-lg`}
-                      >
-                        {user.email[0]?.toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  ))
-                )}
-
-                {!loading && latestUsers.length > 3 && (
-                  <div className="w-10 h-10 rounded-full bg-gray-800 text-white font-semibold flex items-center justify-center border-2 text-sm hover:scale-110 transition-transform duration-300 animate-bounce delay-300">
-                    +{latestUsers.length - 3}
-                  </div>
-                )}
-              </div>
-
-              {/* Count Badge */}
-              <Badge className="font-bold h-10 text-xs md:text-sm lg:text-lg xl:text-lg text-yellow-200 animate-pulse flex items-center gap-1">
-                <Zap className="w-4 h-4 animate-bounce" />
-                {loading ? "Loading waitlist..." : `${latestUsers.length} people in the waitlist!`}
-              </Badge>
-            </div>
-
-          </div>
+          <AvatarGroup/>
         </div>
       </div>
     </div>

@@ -1,3 +1,5 @@
+// app/api/fetchWaitlist/route.ts
+
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
@@ -8,17 +10,16 @@ export async function GET() {
     const collection = db.collection("emails");
 
     const users = await collection
-      .find({})
-      .sort({ createdAt: -1 }) // latest first      
+      .find({}, { projection: { email: 1 } }) // Project only email field
+      .sort({ createdAt: -1 })
       .toArray();
 
-    return NextResponse.json({
-      users: users.map((u) => ({
-        email: u.email,
-      })),
-    });
+    return NextResponse.json({ users });
   } catch (err) {
-    console.error("Error fetching latest registrations:", err);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    console.error("[FETCH_WAITLIST_ERROR]:", err);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

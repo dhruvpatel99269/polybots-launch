@@ -1,18 +1,17 @@
-'use client';
+"use client";
 import { useState, useRef, ChangeEvent, FormEvent } from "react";
 import emailjs from "@emailjs/browser";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
+import { SpinnerLoader } from "../loaders/Spinner";
+import { useWaitlist } from "@/hooks/useWaitlist";
 
-interface MailFormProps {
-  onSuccess?: (newUser: { email: string }) => void;
-}
-
-const MailForm = ({ onSuccess }: MailFormProps) => {
+const MailForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const { setLatestUsers } = useWaitlist();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -39,8 +38,7 @@ const MailForm = ({ onSuccess }: MailFormProps) => {
 
       if (res.status === 409) {
         toast.error(`You're already on the waitlist! Your position is #${data.queue}`);
-      } else if (res.ok) {
-        // ✅ Send confirmation email
+      } else if (res.ok) {        
         await emailjs.send(
           process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
           process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
@@ -55,10 +53,8 @@ const MailForm = ({ onSuccess }: MailFormProps) => {
 
         toast.success(`You're successfully added to the waitlist! Your queue number is #${data.queue}`);
 
-        // 🔥 Notify parent component immediately
-        if (onSuccess) {
-          onSuccess({ email });
-        }
+        // Update waitlist state using hook
+        setLatestUsers((prev) => [{ email }, ...prev]);
 
         setEmail("");
       } else {
@@ -94,12 +90,7 @@ const MailForm = ({ onSuccess }: MailFormProps) => {
           disabled={loading}
           className={`${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-neutral-800"}`}
         >
-          {loading ? (
-            <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> <span>Processing</span></>
-          ) : (
-            "Join Waitlist"
-          )}
-
+          {loading ? <SpinnerLoader /> : "Join Waitlist"}
         </Button>
       </form>
     </div>
