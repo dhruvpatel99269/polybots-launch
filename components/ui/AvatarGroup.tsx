@@ -32,7 +32,7 @@ export default function AvatarGroup() {
               ))}
 
               {latestUsers.length > 3 && (
-                <div className="w-10 h-10 rounded-full bg-gray-800 text-white font-semibold flex items-center justify-center border-2 ring-white text-sm hover:scale-110 transition-transform duration-300 z-1">
+                <div className="w-10 h-10 rounded-full bg-[#d97757] text-white font-semibold flex items-center justify-center border-2 ring-white text-sm hover:scale-110 transition-transform duration-300 z-1">
                   +{latestUsers.length - 3}
                 </div>
               )}

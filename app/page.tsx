@@ -23,10 +23,6 @@ const features = [
     title: "Auto System Diagramming",
     description: "Automatically generate visual system architecture diagrams and flows.",
   },
-  {
-    title: "Multibot Collaboration",
-    description: "Work with specialized bots for UI, backend, DevOps, and more — all in sync.",
-  },
 ];
 
 export default function HomePage() {

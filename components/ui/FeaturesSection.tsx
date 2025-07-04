@@ -19,10 +19,6 @@ const FeaturesSection = ({
     title: "Auto System Diagramming",
     description: "Automatically generate visual system architecture diagrams and flows.",
   },
-  {
-    title: "Multibot Collaboration",
-    description: "Work with specialized bots for UI, backend, DevOps, and more — all in sync.",
-  },
 ]
 }) => {
   return (
@@ -34,7 +30,7 @@ const FeaturesSection = ({
             Discover the powerful features that make our platform the perfect choice for modern teams.
           </p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <FeatureCard key={index} feature={feature} index={index} />
           ))}

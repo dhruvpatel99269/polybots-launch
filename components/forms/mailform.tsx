@@ -103,7 +103,7 @@ const MailForm = ({ ctaText = "Join Waitlist" }) => {
           style={{ border, boxShadow }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="group relative flex items-center gap-2 rounded-full bg-[#d97757]/10 px-4 py-2 lg:px-6 xl:px-6 lg:py-3 xl:py-3 text-white font-medium text-sm transition-all hover:bg-[#d97757]/20 backdrop-blur-sm whitespace-nowrap"
+          className="group relative flex items-center gap-2 rounded-full bg-[#d97757]/10 px-4 py-2 lg:px-6 xl:px-6 lg:py-3 xl:py-3 text-white font-medium text-sm transition-all hover:bg-[#d97757]/20 backdrop-blur-sm whitespace-nowrap cursor-pointer"
         >
           {loading ? (
             <div className="flex gap-x-1 items-center justify-center">

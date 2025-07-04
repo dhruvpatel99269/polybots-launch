@@ -16,7 +16,7 @@ export function getColorForEmail(email: string): string {
     "bg-gradient-to-br from-[#e89b7e] to-[#f4b8a5]",
     "bg-gradient-to-br from-[#f4b8a5] to-[#ffc9b4]",
     "bg-gradient-to-br from-[#ffc9b4] to-[#ffdccc]"
-  ];
+  ];  
 
   let hash = 0;
   for (let i = 0; i < email.length; i++) {
