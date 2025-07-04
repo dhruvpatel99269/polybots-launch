@@ -12,14 +12,10 @@ export const isValidEmail = (email: string): boolean => {
 
 export function getColorForEmail(email: string): string {
   const colors = [
-    "bg-gradient-to-br from-pink-500 to-rose-500",
-    "bg-gradient-to-br from-blue-500 to-cyan-500",
-    "bg-gradient-to-br from-yellow-400 to-orange-500",
-    "bg-gradient-to-br from-purple-500 to-fuchsia-600",
-    "bg-gradient-to-br from-green-400 to-emerald-600",
-    "bg-gradient-to-br from-red-400 to-amber-600",
-    "bg-gradient-to-br from-teal-400 to-blue-700",
-    "bg-gradient-to-br from-indigo-500 to-violet-700"
+    "bg-gradient-to-br from-[#d97757] to-[#e89b7e]",
+    "bg-gradient-to-br from-[#e89b7e] to-[#f4b8a5]",
+    "bg-gradient-to-br from-[#f4b8a5] to-[#ffc9b4]",
+    "bg-gradient-to-br from-[#ffc9b4] to-[#ffdccc]"
   ];
 
   let hash = 0;
