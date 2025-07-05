@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Linkedin } from "lucide-react";
 import SparklesCore from "@/components/ui/SparklesCore";
 import TeamAvatar from "@/components/ui/TeamAvatar";
+import Image from "next/image";
 
 const teamMembers = [
   {
@@ -11,29 +13,29 @@ const teamMembers = [
     role: "Application Tester",
     image: "/team/vasu.png",
     linkedin: "https://linkedin.com/in/alexjohnson",
-    bio: "Ensures product reliability with detailed manual and automated testing across multiple platforms and environments."
+    bio: "Ensures product reliability with detailed manual and automated testing across multiple platforms and environments.",
   },
   {
     name: "Dhaval Bhimani",
     role: "Backend Developer",
     image: "/team/dhaval.png",
     linkedin: "https://linkedin.com/in/sarahchen",
-    bio: "Designs scalable backend systems, APIs, and databases optimized for high performance and security."
+    bio: "Designs scalable backend systems, APIs, and databases optimized for high performance and security.",
   },
   {
     name: "Dhruv Patel",
     role: "Full Stack Developer",
-    image: "/team/dhruv.png",
-    linkedin: "https://linkedin.com/in/marcusrodriguez",
-    bio: "Builds seamless user interfaces and robust backend services using modern full-stack technologies and practices."
+    image: "/team/dhruv.jpg",
+    linkedin: "https://www.linkedin.com/in/dhruv-patel-dp99269/",
+    bio: "Builds seamless user interfaces and robust backend services using modern full-stack technologies and practices.",
   },
   {
     name: "Harsh Kharwar",
     role: "Frontend Developer",
     image: "/team/harsh.png",
     linkedin: "https://linkedin.com/in/emilywatson",
-    bio: "Develops responsive, interactive user interfaces with clean code and optimized user experience in mind."
-  }
+    bio: "Develops responsive, interactive user interfaces with clean code and optimized user experience in mind.",
+  },
 ];
 
 export default function TeamSection() {
@@ -52,7 +54,7 @@ export default function TeamSection() {
         />
       </div>
 
-      {/* Content */}
+      {/* Header */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 pb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -84,7 +86,7 @@ export default function TeamSection() {
         </motion.p>
       </div>
 
-      {/* Team Grid */}
+      {/* Team Cards */}
       <div className="relative z-10 max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member, index) => (
@@ -96,33 +98,55 @@ export default function TeamSection() {
               className="group"
             >
               <div className="bg-black/20 backdrop-blur-sm border border-[#d97757]/20 rounded-2xl p-6 hover:border-[#d97757]/40 transition-all duration-300 hover:bg-black/30">
-                <div className="relative mb-6">
-                  <TeamAvatar name={member.name} size={128} className="mx-auto" />
-                  <a
-                    href={member.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#d97757] rounded-full flex items-center justify-center hover:bg-[#c86a4a] transition duration-300"
-                  >
-                    <Linkedin className="w-4 h-4 text-white" />
-                  </a>
-                </div>
-
-                <div className="text-center">
-                  <h3 className="text-xl font-semibold text-white mb-1 group-hover:text-[#d97757] transition-colors">
-                    {member.name}
-                  </h3>
-                  <p className="text-[#d97757] text-sm font-medium mb-2">{member.role}</p>
-                  <p className="text-gray-400 text-sm">{member.bio}</p>
-                </div>
+                <TeamCard member={member} />
               </div>
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Optional overlay */}
+      {/* Mask overlay */}
       <div className="absolute inset-0 bg-black/20 [mask-image:radial-gradient(50%_50%_at_50%_50%,transparent_20%,black)]" />
     </section>
+  );
+}
+
+function TeamCard({ member }: { member: typeof teamMembers[0] }) {
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <>
+      <div className="relative mb-6">
+        {!imageError ? (
+          <Image
+            src={member.image}
+            alt={member.name}
+            width={100}
+            height={100}
+            className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-[#d97757]/40 shadow-lg"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <TeamAvatar name={member.name} size={128} className="mx-auto" />
+        )}
+
+        <a
+          href={member.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#d97757] rounded-full flex items-center justify-center hover:bg-[#c86a4a] transition duration-300"
+        >
+          <Linkedin className="w-4 h-4 text-white" />
+        </a>
+      </div>
+
+      <div className="text-center">
+        <h3 className="text-xl font-semibold text-white mb-1 group-hover:text-[#d97757] transition-colors">
+          {member.name}
+        </h3>
+        <p className="text-[#d97757] text-sm font-medium mb-2">{member.role}</p>
+        <p className="text-gray-400 text-sm">{member.bio}</p>
+      </div>
+    </>
   );
 }
