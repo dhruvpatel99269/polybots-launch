@@ -29,7 +29,7 @@ const MailForm = ({ ctaText = "Join Waitlist" }: MailFormProps) => {
   const formRef = useRef<HTMLFormElement>(null);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const { setLatestUsers } = useWaitlist();
+  // const { setLatestUsers } = useWaitlist();
 
   const { refreshWaitlist } = useWaitlist();
 

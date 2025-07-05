@@ -151,7 +151,7 @@ export function generateWaitlistEmail(email: string, queue: number): string {
           <div class="queue-box">Your Queue Number: <strong>#${queue}</strong></div>
           <p>Our squad’s out here grinding to drop something straight-up fire. You’ll be the first to know when we’re ready to pop off!</p>
           <p class="tag">We’ll slide into your inbox when the site’s live, no cap! 🔥</p>
-          <p>Stay locked and big love for joining the wave early!❤️💪🏼</p>
+          <p>Stay locked in and big love for joining the wave early!❤️💪🏼</p>
         </div>
 
         <div class="footer">

@@ -9,18 +9,11 @@ import Image from "next/image";
 
 const teamMembers = [
   {
-    name: "Vasu Desai",
-    role: "Application Tester",
-    image: "/team/vasu.png",
-    linkedin: "https://linkedin.com/in/alexjohnson",
-    bio: "Ensures product reliability with detailed manual and automated testing across multiple platforms and environments.",
-  },
-  {
     name: "Dhaval Bhimani",
-    role: "Backend Developer",
-    image: "/team/dhaval.png",
-    linkedin: "https://linkedin.com/in/sarahchen",
-    bio: "Designs scalable backend systems, APIs, and databases optimized for high performance and security.",
+    role: "Full Stack Engineer",
+    image: "/team/dhaval.jpg",
+    linkedin: "https://www.linkedin.com/in/dhaval1522/",
+    bio: "Builds scalable web apps end-to-end, integrating frontend, backend, and automated CI/CD pipelines.",
   },
   {
     name: "Dhruv Patel",
@@ -32,9 +25,16 @@ const teamMembers = [
   {
     name: "Harsh Kharwar",
     role: "Frontend Developer",
-    image: "/team/harsh.png",
-    linkedin: "https://linkedin.com/in/emilywatson",
+    image: "/team/harsh.jpg",
+    linkedin: "https://www.linkedin.com/in/harsh-kharwar-82546928a/",
     bio: "Develops responsive, interactive user interfaces with clean code and optimized user experience in mind.",
+  },
+  {
+    name: "Vasu Desai",
+    role: "Application Tester",
+    image: "/team/vasu.png",
+    linkedin: "https://www.linkedin.com/in/vasudesai11/",
+    bio: "Ensures product reliability with detailed manual and automated testing across multiple platforms and environments.",
   },
 ];
 
@@ -82,7 +82,7 @@ export default function TeamSection() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed"
         >
-          We're a passionate team of innovators, designers, and engineers dedicated to transforming how products are built with AI.
+          We&apos;re a passionate team of innovators, designers, and engineers dedicated to transforming how products are built with AI.
         </motion.p>
       </div>
 
