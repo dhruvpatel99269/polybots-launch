@@ -1,4 +1,3 @@
-// app/api/sendEmail/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { transporter } from "@/lib/mail";
 import { generateWaitlistEmail } from "@/lib/mailTemplate";
@@ -18,7 +17,7 @@ export async function POST(req: NextRequest) {
       from: process.env.EMAIL_USER,
       to,
       subject,
-      html: htmlMessage, // 💡 Use custom HTML here
+      html: htmlMessage,
     });
 
     console.log("✅ HTML email sent:", info.response);

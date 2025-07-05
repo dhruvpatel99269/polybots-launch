@@ -1,4 +1,3 @@
-// lib/mail.ts
 import nodemailer from "nodemailer";
 
 export const transporter = nodemailer.createTransport({
@@ -10,7 +9,7 @@ export const transporter = nodemailer.createTransport({
 });
 
 // Log whether transporter is ready
-transporter.verify((error, success) => {
+transporter.verify((error) => {
   if (error) {
     console.error("❌ Transporter verification failed:", error);
   } else {

@@ -67,8 +67,8 @@ const MailForm = ({ ctaText = "Join Waitlist" }: MailFormProps) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           to: email,
-          subject: "Waitlist Confirmation",
-          queue: waitlistData.queue, // 💡 pass queue number
+          subject: "🔥 Heads up: Your VIP waitlist spot is secured!",
+          queue: waitlistData.queue,
         }),
       });
 
