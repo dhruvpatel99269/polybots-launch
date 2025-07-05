@@ -1,14 +1,17 @@
 "use client";
-import { useState, useRef, ChangeEvent, FormEvent } from "react";
-import emailjs from "@emailjs/browser";
+
+import { useState, useRef, ChangeEvent, FormEvent, useEffect } from "react";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { useWaitlist } from "@/hooks/useWaitlist";
-import { useEffect } from "react";
 import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
 
-const MailForm = ({ ctaText = "Join Waitlist" }) => {
+interface MailFormProps {
+  ctaText?: string;
+}
+
+const MailForm = ({ ctaText = "Join Waitlist" }: MailFormProps) => {
   const color = useMotionValue("#d97757");
 
   useEffect(() => {
@@ -16,7 +19,7 @@ const MailForm = ({ ctaText = "Join Waitlist" }) => {
       ease: "easeInOut",
       duration: 8,
       repeat: Infinity,
-      repeatType: "mirror"
+      repeatType: "mirror",
     });
   }, [color]);
 
@@ -41,44 +44,53 @@ const MailForm = ({ ctaText = "Join Waitlist" }) => {
     }
 
     setLoading(true);
+    console.log("📥 Email input:", email);
 
     try {
-      const res = await fetch("/api/registrations", {
+      const waitlistRes = await fetch("/api/registrations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
 
-      const data = await res.json();
+      const waitlistData = await waitlistRes.json();
+      console.log("🗃️ Waitlist Response:", waitlistData);
 
-      if (res.status === 409) {
-        toast.error(`You're already on the waitlist! Your position is #${data.queue}`);
-      } else if (res.ok) {
-        await emailjs.send(
-          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
-          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
-          {
-            to_email: email,
-            from_email: process.env.FROM_EMAIL,
-            message: `New waitlist submission from: ${email}. Queue number: ${data.queue}`,
-            queue: data.queue,
-          },
-          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-        );
+      if (waitlistRes.status === 409) {
+        toast.error(`You're already on the waitlist! Your position is #${waitlistData.queue}`);
+        setLoading(false);
+        return;
+      }
 
+      const emailRes = await fetch("/api/sendEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: email,
+          subject: "Waitlist Confirmation",
+          queue: waitlistData.queue, // 💡 pass queue number
+        }),
+      });
+
+
+      const emailData = await emailRes.json();
+      console.log("📧 Email API Response:", emailData);
+
+      if (emailRes.ok) {
         toast.success("You're successfully added to the waitlist! Check your mail.");
         setLatestUsers((prev) => [{ email }, ...prev]);
         setEmail("");
       } else {
-        toast.error(data.error || "Something went wrong. Please try again.");
+        toast.error(emailData.message || "Email failed. Try again.");
       }
     } catch (err) {
-      console.error("Frontend error:", err);
+      console.error("❌ Client error:", err);
       toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="flex justify-center items-center w-full h-full">
@@ -111,14 +123,9 @@ const MailForm = ({ ctaText = "Join Waitlist" }) => {
               <span className="text-sm">Processing</span>
             </div>
           ) : (
-            <>
-              {ctaText}              
-            </>
+            <>{ctaText}</>
           )}
         </motion.button>
-
-
-
       </form>
     </div>
   );
