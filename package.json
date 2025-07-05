@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check-ts-deps": "node -e \"try { require('typescript'); require('@types/node'); } catch(e) { console.log('Installing missing TypeScript dependencies...'); require('child_process').execSync('npm install --save-dev typescript@5.8.3 @types/node@20.19.4', {stdio: 'inherit'}); }\"",
+    "prelint": "npm run check-ts-deps"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
