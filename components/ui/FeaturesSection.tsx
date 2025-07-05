@@ -34,7 +34,7 @@ const FeaturesSection = ({
           {features.map((feature, index) => (
             <FeatureCard key={index} feature={feature} index={index} />
           ))}
-        </div>
+        </div>      
       </div>
     </section>
   );

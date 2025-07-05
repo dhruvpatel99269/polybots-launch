@@ -1,6 +1,7 @@
 "use client";
 import HeroSection from "@/components/ui/HeroSection";
 import FeaturesSection from "@/components/ui/FeaturesSection";
+import TeamSection from "@/components/ui/TeamSection";
 
 const productName = "Polybots";
 const tagline = "Turn Ideas into Websites Instantly with AI";
@@ -39,6 +40,8 @@ export default function HomePage() {
         productName={productName}
         features={features}
       />                  
+      
+      <TeamSection/>
     </div>
   );
 }
