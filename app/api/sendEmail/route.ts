@@ -22,10 +22,11 @@ export async function POST(req: NextRequest) {
 
     console.log("✅ HTML email sent:", info.response);
     return NextResponse.json({ success: true, message: "Email sent successfully" }, { status: 200 });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     console.error("❌ Error sending HTML email:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to send email", error: error.message },
+      { success: false, message: "Failed to send email", error: errorMessage },
       { status: 500 }
     );
   }
