@@ -1,4 +1,4 @@
-name: Simple CI Pipeline
+name: CI Pipeline
 
 on:
   push:
@@ -8,14 +8,12 @@ on:
 
 jobs:
   build-and-test:
-    name: Build and Test
     runs-on: ubuntu-latest
     env:
       NODE_ENV: production
-      # Add default values for required environment variables
-      MONGODB_URI: ${{ secrets.MONGODB_URI || 'mongodb://localhost:27017/waitlist_db' }}
-      EMAIL_USER: ${{ secrets.EMAIL_USER || 'test@example.com' }}
-      EMAIL_PASS: ${{ secrets.EMAIL_PASS || 'password' }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      EMAIL_USER: ${{ secrets.EMAIL_USER }}
+      EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,19 +27,11 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          # Check for peer dependency issues
-          npm ls || true
-
-      - name: Check for TypeScript errors
-        run: |
-          npx tsc --noEmit || echo "TypeScript check failed but continuing build"
 
       - name: Run ESLint with auto-fix
         run: |
-          npm run lint -- --fix || echo "Linting failed but continuing build"
+          npm run lint
 
       - name: Build Next.js app
         run: |
-          # Remove next.config.ts if it exists to avoid conflicts
-          [ -f next.config.ts ] && rm next.config.ts || echo "No next.config.ts file found"
           npm run build
