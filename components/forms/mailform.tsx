@@ -4,7 +4,7 @@ import { useState, useRef, ChangeEvent, FormEvent, useEffect } from "react";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
-import { useWaitlist } from "@/hooks/useWaitlist";
+import { useWaitlist } from "@/hooks/waitlistContext";
 import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
 
 interface MailFormProps {
@@ -30,6 +30,9 @@ const MailForm = ({ ctaText = "Join Waitlist" }: MailFormProps) => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const { setLatestUsers } = useWaitlist();
+
+  const { refreshWaitlist } = useWaitlist();
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -78,7 +81,7 @@ const MailForm = ({ ctaText = "Join Waitlist" }: MailFormProps) => {
 
       if (emailRes.ok) {
         toast.success("You're successfully added to the waitlist! Check your mail.");
-        setLatestUsers((prev) => [{ email }, ...prev]);
+        await refreshWaitlist();
         setEmail("");
       } else {
         toast.error(emailData.message || "Email failed. Try again.");

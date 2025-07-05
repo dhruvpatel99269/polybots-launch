@@ -4,7 +4,7 @@ import { getColorForEmail } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Zap } from "lucide-react";
 import { CardLoader } from "@/components/loaders/CardLoader";
-import { useWaitlist } from "@/hooks/useWaitlist";
+import { useWaitlist } from "@/hooks/waitlistContext";
 
 export default function AvatarGroup() {
   const { latestUsers, loading } = useWaitlist();
