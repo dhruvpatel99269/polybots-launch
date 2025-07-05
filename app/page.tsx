@@ -33,15 +33,15 @@ export default function HomePage() {
         productName={productName}
         tagline={tagline}
         description={description}
-        launchDate={launchDate}        
+        launchDate={launchDate}
       />
 
       <FeaturesSection
         productName={productName}
         features={features}
-      />                  
-      
-      <TeamSection/>
+      />
+
+      <TeamSection />
     </div>
   );
 }

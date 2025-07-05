@@ -23,7 +23,7 @@ const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className: cn(baseClasses, buttonVariants[variant], className),
         ref,
         ...props,
-      });
+      } as React.HTMLAttributes<HTMLElement>);
     }
 
     return (

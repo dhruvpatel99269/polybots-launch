@@ -43,7 +43,7 @@ const HeroSection = ({
           </span>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-6 flex justify-center items-center">    
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-6 flex justify-center items-center">
           <Image src="/logo.svg" alt="logo" width={75} height={75} />
         </motion.div>
 
@@ -75,11 +75,11 @@ const HeroSection = ({
         </motion.p>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.8 }} className="mb-8">
-            <MailForm/>
-        </motion.div>        
+          <MailForm />
+        </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1 }}>
-            <AvatarGroup/>
+          <AvatarGroup />
         </motion.div>
       </div>
 
