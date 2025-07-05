@@ -11,7 +11,7 @@ export default function AvatarGroup() {
 
   return (
     <div className="flex justify-center items-center py-6">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-center gap-4">
         {/* Avatar Stack */}
         <div className="flex -space-x-3">
           {loading ? (

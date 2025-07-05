@@ -94,13 +94,12 @@ const MailForm = ({ ctaText = "Join Waitlist" }: MailFormProps) => {
     }
   };
 
-
   return (
     <div className="flex justify-center items-center w-full h-full">
       <form
         ref={formRef}
         onSubmit={handleSubmit}
-        className="flex flex-col md:flex-row gap-4 items-center w-full max-w-md"
+        className="flex flex-col md:flex-row gap-4 items-center w-full max-w-md px-2 sm:px-0"
       >
         <Input
           type="email"
