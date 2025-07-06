@@ -244,24 +244,6 @@ export function generateWaitlistEmail(email: string, queue: number): string {
   <div class="email-container">
     <div class="header">
       <div class="header-content">
-        
-<table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 25px;">
-  <tr>
-    <td align="center" valign="middle">
-      <table border="0" cellpadding="0" cellspacing="0">
-        <tr>
-          <td valign="middle">
-            <img src="https://polybots-launch.vercel.app/assets/logo.png" alt="Polybots Logo" width="40" height="40" style="display: block; border: 0;" />
-          </td>
-          <td width="10"></td>
-          <td valign="middle">
-            <span style="color: white; font-size: 32px; font-weight: bold; font-family: 'Outfit', Arial, sans-serif;">Polybots</span>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
         <h1>You're In The Queue, Bestie!</h1>
       </div>
     </div>
