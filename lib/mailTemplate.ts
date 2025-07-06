@@ -251,7 +251,7 @@ export function generateWaitlistEmail(email: string, queue: number): string {
       <table border="0" cellpadding="0" cellspacing="0">
         <tr>
           <td valign="middle">
-              <img src="https://github.com/dhruvpatel99269/polybots-launch/blob/master/assets/logo.png" alt="Polybots Logo" width="40" height="40" style="display: block; border: 0;" />
+            <img src="https://polybots-launch.vercel.app/assets/logo.png" alt="Polybots Logo" width="40" height="40" style="display: block; border: 0;" />
           </td>
           <td width="10"></td>
           <td valign="middle">
@@ -268,7 +268,9 @@ export function generateWaitlistEmail(email: string, queue: number): string {
 
     <div class="content">
       <div class="section">
-        <p class="text">Hey ${email.split('@')[0]}! <span class="slang">*vibes check*</span></p>
+        <p class="text">Hey ${
+          email.split("@")[0]
+        }! <span class="slang">*vibes check*</span></p>
         <p class="text">The fact that you've secured your spot for our Polybots launch is <span class="slang">straight fire!</span> We're hyped to have you join our community of innovators.</p>
 
         <div class="highlight">
