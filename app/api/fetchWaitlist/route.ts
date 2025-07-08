@@ -1,5 +1,4 @@
 // app/api/fetchWaitlist/route.ts
-
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
@@ -10,7 +9,7 @@ export async function GET() {
     const collection = db.collection("emails");
 
     const users = await collection
-      .find({}, { projection: { email: 1 } }) // Project only email field
+      .find({}, { projection: { email: 1, queue: 1, createdAt: 1 } })
       .sort({ createdAt: -1 })
       .toArray();
 
