@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { LogOutIcon } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Button from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import SparklesCore from "@/components/ui/SparklesCore";
 
 interface User {
     _id: string;
@@ -88,69 +90,118 @@ export default function AdminDashboard() {
         return `${day}/${month}/${year}, ${displayHour}:${minutes}:${seconds} ${ampm}`;
     };
 
-
     return (
-        <div className="min-h-screen bg-muted px-4 py-6 md:px-8">
-            <div className="max-w-6xl mx-auto space-y-6">
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
-                    <Button variant="outline" onClick={handleLogout}>
-                        <LogOutIcon className="w-4 h-4 mr-2" />
-                        Logout
-                    </Button>
-                </div>
+        <div className="min-h-screen bg-black relative">
+            {/* Sparkles background */}
+            <div className="absolute inset-0 z-0">
+                <SparklesCore
+                    background="transparent"
+                    minSize={0.6}
+                    maxSize={1.4}
+                    particleDensity={30}
+                    particleColor="#d97757"
+                    speed={0.3}
+                    className="w-full h-full"
+                />
+            </div>
 
-                <Card>
-                    <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <CardTitle className="text-lg font-semibold">
-                            Registered Users
-                            <Badge className="ml-2" variant="secondary">{users.length}</Badge>
-                        </CardTitle>
-                    </CardHeader>
+            {/* Mask overlay */}
+            <div className="absolute inset-0 bg-black/20 [mask-image:radial-gradient(50%_50%_at_50%_50%,transparent_20%,black)]" />
 
-                    <CardContent className="overflow-x-auto">
-                        {loading ? (
-                            <div className="space-y-2">
-                                {[...Array(5)].map((_, idx) => (
-                                    <div key={idx} className="flex items-center space-x-4">
-                                        <Skeleton className="h-4 w-12" />
-                                        <Skeleton className="h-4 w-48" />
-                                        <Skeleton className="h-4 w-64" />
+            {/* Content */}
+            <div className="relative z-10 px-4 py-6 md:px-8">
+                <div className="max-w-6xl mx-auto space-y-6">
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                        className="flex flex-col sm:flex-row justify-between items-center gap-4"
+                    >
+                        <div>
+                            <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-br from-white to-gray-300 bg-clip-text text-transparent">
+                                Admin Dashboard
+                            </h1>
+                            <p className="text-gray-400 mt-2">Manage your waitlist registrations</p>
+                        </div>
+                        <Button 
+                            variant="outline" 
+                            onClick={handleLogout}
+                            className="border-[#d97757]/20 text-[#d97757] hover:bg-[#d97757]/10 hover:border-[#d97757]/40 backdrop-blur-sm cursor-pointer"
+                        >
+                            <LogOutIcon className="w-4 h-4 mr-2" />
+                            Logout
+                        </Button>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                    >
+                        <Card className="bg-black/20 backdrop-blur-sm border border-[#d97757]/20 hover:border-[#d97757]/40 transition-all duration-300">
+                            <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between">
+                                <CardTitle className="text-lg font-semibold text-white">
+                                    Registered Users
+                                    <Badge className="ml-2 bg-[#d97757] text-white border-[#d97757]">
+                                        {users.length}
+                                    </Badge>
+                                </CardTitle>
+                            </CardHeader>
+
+                            <CardContent className="overflow-x-auto">
+                                {loading ? (
+                                    <div className="space-y-2">
+                                        {[...Array(5)].map((_, idx) => (
+                                            <div key={idx} className="flex items-center space-x-4">
+                                                <Skeleton className="h-4 w-12 bg-gray-700" />
+                                                <Skeleton className="h-4 w-48 bg-gray-700" />
+                                                <Skeleton className="h-4 w-64 bg-gray-700" />
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                        ) : error ? (
-                            <div className="text-red-500 text-sm">{error}</div>
-                        ) : (
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead className="w-[100px]">Queue #</TableHead>
-                                        <TableHead>Email</TableHead>
-                                        <TableHead>Registered At</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {users.length > 0 ? (
-                                        users.map((user) => (
-                                            <TableRow key={user._id}>
-                                                <TableCell>{user.queue ?? "N/A"}</TableCell>
-                                                <TableCell>{user.email}</TableCell>
-                                                <TableCell>{user.createdAt ? formatDate(user.createdAt) : "N/A"}</TableCell>
+                                ) : error ? (
+                                    <div className="text-red-400 text-sm">{error}</div>
+                                ) : (
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow className="border-[#d97757]/20 hover:bg-[#d97757]/5">
+                                                <TableHead className="w-[100px] text-[#d97757] font-medium">Queue #</TableHead>
+                                                <TableHead className="text-[#d97757] font-medium">Email</TableHead>
+                                                <TableHead className="text-[#d97757] font-medium">Registered At</TableHead>
                                             </TableRow>
-                                        ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell colSpan={3} className="text-center text-muted-foreground">
-                                                No users registered yet
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        )}
-                    </CardContent>
-                </Card>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {users.length > 0 ? (
+                                                users.map((user) => (
+                                                    <TableRow 
+                                                        key={user._id}
+                                                        className="border-[#d97757]/10 hover:bg-[#d97757]/5 transition-colors"
+                                                    >
+                                                        <TableCell className="text-white font-medium">
+                                                            {user.queue ?? "N/A"}
+                                                        </TableCell>
+                                                        <TableCell className="text-gray-300">
+                                                            {user.email}
+                                                        </TableCell>
+                                                        <TableCell className="text-gray-400">
+                                                            {user.createdAt ? formatDate(user.createdAt) : "N/A"}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))
+                                            ) : (
+                                                <TableRow>
+                                                    <TableCell colSpan={3} className="text-center text-gray-400 py-8">
+                                                        No users registered yet
+                                                    </TableCell>
+                                                </TableRow>
+                                            )}
+                                        </TableBody>
+                                    </Table>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                </div>
             </div>
         </div>
     );
