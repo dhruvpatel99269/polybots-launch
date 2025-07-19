@@ -12,10 +12,10 @@ pipeline {
             }
         }
 
-        stage('Setup Node (manually)') {
+        stage('Verify Node.js Installation') {
             steps {
                 sh '''
-                    export PATH=$HOME/.nvm/versions/node/v20.0.0/bin:$PATH
+                    echo "Checking Node.js and npm versions"
                     node -v
                     npm -v
                 '''
@@ -36,13 +36,13 @@ pipeline {
 
         stage('Lint') {
             steps {
-                sh 'npm run lint || true'
+                sh 'npm run lint || echo "Lint warnings ignored"'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'npm test || echo "No tests configured"'
+                sh 'npm test || echo "No tests configured or test failed"'
             }
         }
 
@@ -51,7 +51,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                echo 'Deploy logic goes here...'
+                echo '✅ Deploy step placeholder — add your deployment logic here.'
             }
         }
     }
@@ -61,7 +61,7 @@ pipeline {
             echo '✅ Pipeline completed successfully.'
         }
         failure {
-            echo '❌ Pipeline failed.'
+            echo '❌ Pipeline failed. Check logs above.'
         }
     }
 }
