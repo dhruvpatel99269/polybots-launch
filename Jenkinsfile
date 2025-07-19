@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/dhruvpatel99269/polybots-launch.git', branch: 'main'
+                git url: 'https://github.com/dhruvpatel99269/polybots-launch.git', branch: 'master'
             }
         }
 
