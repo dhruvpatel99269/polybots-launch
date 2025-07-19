@@ -2,18 +2,23 @@ pipeline {
     agent any
 
     environment {
-        // You can add environment variables here
         NODE_ENV = 'development'
-    }
-
-    tools {
-        nodejs 'NodeJS_20'  // Make sure this matches your Jenkins Node.js installation name
     }
 
     stages {
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/dhruvpatel99269/polybots-launch.git', branch: 'main'
+            }
+        }
+
+        stage('Setup Node (manually)') {
+            steps {
+                sh '''
+                    export PATH=$HOME/.nvm/versions/node/v20.0.0/bin:$PATH
+                    node -v
+                    npm -v
+                '''
             }
         }
 
@@ -31,13 +36,13 @@ pipeline {
 
         stage('Lint') {
             steps {
-                sh 'npm run lint || true' // Optional: only warn, don’t fail
+                sh 'npm run lint || true'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'npm test || echo "No tests configured"' // Optional
+                sh 'npm test || echo "No tests configured"'
             }
         }
 
@@ -46,7 +51,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                echo 'Deploy logic goes here (e.g., upload to S3, FTP, or run docker-compose)'
+                echo 'Deploy logic goes here...'
             }
         }
     }
